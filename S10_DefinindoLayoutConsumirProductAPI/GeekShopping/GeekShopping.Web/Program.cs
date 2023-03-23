@@ -8,7 +8,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddHttpClient<IProductService, ProductService>(c =>
 {
-    c.BaseAddress = new Uri(builder.Configuration["ServicesUrls.ProductAPI"]);
+    c.BaseAddress = new Uri(builder.Configuration["ServicesUrls:ProductAPI"]);
 });
 
 var app = builder.Build();
@@ -18,6 +18,7 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
+
 app.UseStaticFiles();
 
 app.UseRouting();
