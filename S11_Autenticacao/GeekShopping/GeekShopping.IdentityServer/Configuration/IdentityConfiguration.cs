@@ -6,7 +6,7 @@ namespace GeekShopping.IdentityServer.Configuration
     public static class IdentityConfiguration
     {
         public const string Admin = "Admin";
-        public const string Customer = "Customer";
+        public const string Client = "Client";
 
         public static IEnumerable<IdentityResource> IdentityResources =>
             new List<IdentityResource>
@@ -51,11 +51,11 @@ namespace GeekShopping.IdentityServer.Configuration
                     AllowedGrantTypes = GrantTypes.Code,
                     RedirectUris =
                     {
-                        "http://localhost:5585/singin-oidc"
+                        "http://localhost:4430/singin-oidc"
                     },
                     PostLogoutRedirectUris =
                     {
-                        "http://localhost:5585/signout-callback-oidc"
+                        "http://localhost:4430/signout-callback-oidc"
                     },
                     AllowedScopes =
                         new List<string>
