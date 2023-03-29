@@ -12,8 +12,8 @@ namespace GeekShopping.IdentityServer.Initializer
         private readonly UserManager<ApplicationUser> _user;
         private readonly RoleManager<IdentityRole> _role;
 
-        public DbInitializer(MySqlContext mySqlContext, 
-            UserManager<ApplicationUser> user, 
+        public DbInitializer(MySqlContext mySqlContext,
+            UserManager<ApplicationUser> user,
             RoleManager<IdentityRole> role)
         {
             _mySqlContext = mySqlContext;
@@ -23,56 +23,55 @@ namespace GeekShopping.IdentityServer.Initializer
 
         public void Initialize()
         {
-            if (_role.FindByNameAsync(IdentityConfiguration.Admin) != null)
+            if (_role.FindByNameAsync(IdentityConfiguration.Admin).Result != null) return;
+
+            _role.CreateAsync(new IdentityRole(IdentityConfiguration.Admin)).GetAwaiter().GetResult();
+
+            _role.CreateAsync(new IdentityRole(IdentityConfiguration.Client)).GetAwaiter().GetResult();
+
+            ApplicationUser admin = new ApplicationUser
             {
-                _role.CreateAsync(new IdentityRole(IdentityConfiguration.Admin)).GetAwaiter().GetResult();
-                
-                _role.CreateAsync(new IdentityRole(IdentityConfiguration.Client)).GetAwaiter().GetResult();
+                UserName = "botas-admin",
+                Email = "botas-admin@erudio.com.br",
+                EmailConfirmed = true,
+                PhoneNumber = "+55 (13) 9 3254-1425",
+                FirstName = "Botas",
+                LastName = "Admin"
+            };
 
-                ApplicationUser admin = new ApplicationUser
-                {
-                    UserName = "botas-admin",
-                    Email = "botas-admin@erudio.com.br",
-                    EmailConfirmed = true,
-                    PhoneNumber = "+55 (13) 9 3254-1425",
-                    FirstName = "Botas",
-                    LastName = "Admin"
-                };
+            _user.CreateAsync(admin, "Erudio123$").GetAwaiter().GetResult();
 
-                _user.CreateAsync(admin, "Erudio123$").GetAwaiter().GetResult();
+            _user.AddToRoleAsync(admin, IdentityConfiguration.Admin).GetAwaiter().GetResult();
 
-                _user.AddToRoleAsync(admin, IdentityConfiguration.Admin).GetAwaiter().GetResult();
-
-                var adminClaims = _user.AddClaimsAsync(admin, new Claim[]
-                {
+            var adminClaims = _user.AddClaimsAsync(admin, new Claim[]
+            {
                     new Claim(JwtClaimTypes.Name, $"{admin.FirstName} {admin.LastName}"),
                     new Claim(JwtClaimTypes.GivenName, $"{admin.FirstName}"),
                     new Claim(JwtClaimTypes.FamilyName, $"{admin.LastName}"),
                     new Claim(JwtClaimTypes.Role, IdentityConfiguration.Admin)
-                }).Result;
+            }).Result;
 
-                ApplicationUser client = new ApplicationUser
-                {
-                    UserName = "botas-client",
-                    Email = "botas-client@erudio.com.br",
-                    EmailConfirmed = true,
-                    PhoneNumber = "+55 (13) 9 3254-1425",
-                    FirstName = "Botas",
-                    LastName = "Admin"
-                };
+            ApplicationUser client = new ApplicationUser
+            {
+                UserName = "botas-client",
+                Email = "botas-client@erudio.com.br",
+                EmailConfirmed = true,
+                PhoneNumber = "+55 (13) 9 3254-1425",
+                FirstName = "Botas",
+                LastName = "Admin"
+            };
 
-                _user.CreateAsync(admin, "Erudio123$").GetAwaiter().GetResult();
+            _user.CreateAsync(client, "Erudio123$").GetAwaiter().GetResult();
 
-                _user.AddToRoleAsync(admin, IdentityConfiguration.Admin).GetAwaiter().GetResult();
+            _user.AddToRoleAsync(client, IdentityConfiguration.Admin).GetAwaiter().GetResult();
 
-                var clientClaims = _user.AddClaimsAsync(client, new Claim[]
-                {
+            var clientClaims = _user.AddClaimsAsync(client, new Claim[]
+            {
                     new Claim(JwtClaimTypes.Name, $"{admin.FirstName} {admin.LastName}"),
                     new Claim(JwtClaimTypes.GivenName, $"{admin.FirstName}"),
                     new Claim(JwtClaimTypes.FamilyName, $"{admin.LastName}"),
                     new Claim(JwtClaimTypes.Role, IdentityConfiguration.Client)
-                }).Result;
-            }
+            }).Result;
         }
     }
 }
