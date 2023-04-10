@@ -56,7 +56,7 @@ namespace GeekShopping.Web.Controllers
         }
 
         [Authorize]
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> ProductUpdate(ProductModel model)
         {
             if (ModelState.IsValid)
