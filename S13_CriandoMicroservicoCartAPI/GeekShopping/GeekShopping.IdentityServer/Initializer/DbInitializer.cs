@@ -1,4 +1,5 @@
 ﻿using GeekShopping.IdentityServer.Configuration;
+using GeekShopping.IdentityServer.Model;
 using GeekShopping.IdentityServer.Model.Context;
 using IdentityModel;
 using Microsoft.AspNetCore.Identity;
@@ -58,12 +59,12 @@ namespace GeekShopping.IdentityServer.Initializer
                 EmailConfirmed = true,
                 PhoneNumber = "+55 (13) 9 3254-1425",
                 FirstName = "Botas",
-                LastName = "Admin"
+                LastName = "Client"
             };
 
             _user.CreateAsync(client, "Erudio123$").GetAwaiter().GetResult();
 
-            _user.AddToRoleAsync(client, IdentityConfiguration.Admin).GetAwaiter().GetResult();
+            _user.AddToRoleAsync(client, IdentityConfiguration.Client).GetAwaiter().GetResult();
 
             var clientClaims = _user.AddClaimsAsync(client, new Claim[]
             {
