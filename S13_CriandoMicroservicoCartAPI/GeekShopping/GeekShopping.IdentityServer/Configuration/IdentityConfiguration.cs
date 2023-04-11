@@ -51,11 +51,11 @@ namespace GeekShopping.IdentityServer.Configuration
                     AllowedGrantTypes = GrantTypes.Code,
                     RedirectUris =
                     {
-                        "http://localhost:4430/singin-oidc"
+                        "https://localhost:4430/singin-oidc"
                     },
                     PostLogoutRedirectUris =
                     {
-                        "http://localhost:4430/signout-callback-oidc"
+                        "https://localhost:4430/signout-callback-oidc"
                     },
                     AllowedScopes =
                         new List<string>
