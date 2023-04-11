@@ -43,7 +43,7 @@ namespace GeekShopping.IdentityServer.Configuration
                 },
                 new Client
                 {
-                    ClientId = "geek_Shopping",
+                    ClientId = "geek_shopping",
                     ClientSecrets =
                     {
                         new Secret("my_super_secret".Sha256()),
