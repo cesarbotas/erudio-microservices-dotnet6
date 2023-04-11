@@ -47,10 +47,10 @@ namespace GeekShopping.Web.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> Login()
         {
-            //var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
 
             return RedirectToAction(nameof(Index));
         }
