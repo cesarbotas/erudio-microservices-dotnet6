@@ -10,7 +10,6 @@ using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Stores;
 using GeekShopping.IdentityServer.MainModule.Account;
 using GeekShopping.IdentityServer.Model;
-using GeekShopping.IdentityServer.Model.Context;
 using IdentityModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
