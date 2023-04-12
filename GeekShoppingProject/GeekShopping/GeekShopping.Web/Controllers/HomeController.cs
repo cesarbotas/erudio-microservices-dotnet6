@@ -61,7 +61,8 @@ namespace GeekShopping.Web.Controllers
             {
                 Count = model.Count,
                 ProductId = model.Id,
-                Product = await _productService.FindProductById(model.Id, token)
+                Product = await _productService.FindProductById(model.Id, token),
+                CartHeader = cart.CartHeader
             };
 
             List<CartDetailViewModel> cartDetails = new List<CartDetailViewModel>();
