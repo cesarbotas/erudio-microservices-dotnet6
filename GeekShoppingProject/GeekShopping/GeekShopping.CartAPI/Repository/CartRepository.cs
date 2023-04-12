@@ -66,13 +66,13 @@ namespace GeekShopping.CartAPI.Repository
                 var cartDetail = await _mySqlContext.CartDetails.AsNoTracking()
                     .FirstOrDefaultAsync
                     (
-                        x => x.ProductId == cartVO.CartDetails.FirstOrDefault().ProductId &&
-                        x.CartHeaderId == cartVO.CartHeader.Id
+                        x => x.ProductId == cart.CartDetails.FirstOrDefault().ProductId &&
+                        x.CartHeaderId == cartHeader.Id
                     );
 
                 if (cartDetail == null) 
                 {
-                    cart.CartDetails.FirstOrDefault().CartHeaderId = cart.CartHeader.Id;
+                    cart.CartDetails.FirstOrDefault().CartHeaderId = cartHeader.Id;
 
                     cart.CartDetails.FirstOrDefault().Product = null;
 
