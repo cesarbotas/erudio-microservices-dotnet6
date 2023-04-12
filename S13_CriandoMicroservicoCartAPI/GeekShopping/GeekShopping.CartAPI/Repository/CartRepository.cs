@@ -106,6 +106,17 @@ namespace GeekShopping.CartAPI.Repository
                     .Where(c => c.CartHeaderId == cartDetail.CartHeaderId)
                     .Count();
 
+                _mySqlContext.CartDetails.Remove(cartDetail);
+
+                if (total == 1)
+                {
+                    var cartHeaderToRemove = await _mySqlContext.CartHeaders.FirstOrDefaultAsync(c => c.Id == cartDetail.CartHeaderId);
+
+                    _mySqlContext.CartHeaders.Remove(cartHeaderToRemove);
+                }
+
+                await _mySqlContext.SaveChangesAsync();
+
                 return true;
             }
             catch (Exception)
@@ -126,7 +137,21 @@ namespace GeekShopping.CartAPI.Repository
 
         public async Task<bool> ClearCart(string userId)
         {
-            throw new NotImplementedException();
+            var cartHeader = await _mySqlContext.CartHeaders.FirstOrDefaultAsync(c => c.UserId == userId);
+
+            if (cartHeader != null) 
+            {
+                _mySqlContext.CartDetails
+                    .RemoveRange(_mySqlContext.CartDetails.Where(c => c.CartHeaderId == cartHeader.Id));
+
+                _mySqlContext.CartHeaders.Remove(cartHeader);
+
+                await _mySqlContext.SaveChangesAsync();
+
+                return true;
+            }
+
+            return false;
         }
     }
 }
