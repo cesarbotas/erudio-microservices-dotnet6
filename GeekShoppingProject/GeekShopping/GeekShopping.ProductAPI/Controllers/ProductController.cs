@@ -15,7 +15,7 @@ namespace GeekShopping.ProductAPI.Controllers
 
         public ProductController(IProductRepository productRepository)
         {
-            _productRepository = productRepository ?? throw new ArgumentNullException(nameof(_productRepository));
+            _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
         }
 
         [HttpGet]

@@ -13,7 +13,7 @@ namespace GeekShopping.CartAPI.Controllers
 
         public CartController(ICartRepository cartRepository)
         {
-            _cartRepository = cartRepository ?? throw new ArgumentNullException(nameof(_cartRepository));
+            _cartRepository = cartRepository ?? throw new ArgumentNullException(nameof(cartRepository));
         }
 
         [HttpGet("find-cart/{id}")]
