@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using GeekShopping.CouponAPI.Data.ValueObjects;
+using GeekShopping.CouponAPI.Model.Entity;
 
 namespace GeekShopping.CouponAPI.Config
 {
