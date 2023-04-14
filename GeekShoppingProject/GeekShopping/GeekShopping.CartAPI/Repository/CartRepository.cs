@@ -22,7 +22,7 @@ namespace GeekShopping.CartAPI.Repository
         {
             Cart cart = new Cart
             {
-                CartHeader = await _mySqlContext.CartHeaders.FirstOrDefaultAsync(c => c.UserId == userId)
+                CartHeader = await _mySqlContext.CartHeaders.FirstOrDefaultAsync(c => c.UserId == userId) ?? new CartHeader()
             };
 
             cart.CartDetails = _mySqlContext.CartDetails
