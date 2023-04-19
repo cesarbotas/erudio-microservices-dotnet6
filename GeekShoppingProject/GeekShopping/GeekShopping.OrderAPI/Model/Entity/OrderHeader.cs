@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeekShopping.OrderAPI.Model.Entity
 {
-    [Table("cart_header")]
+    [Table("order_header")]
     public class OrderHeader : BaseEntity
     {
         [Column("user_id")]
