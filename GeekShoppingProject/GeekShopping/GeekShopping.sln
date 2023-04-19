@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeekShopping.CouponAPI", "G
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration", "{09434C04-570E-41E7-A1AA-B441F649FBBA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekShopping.MessageBus", "GeekShopping.MessageBus\GeekShopping.MessageBus.csproj", "{421CF76E-7C35-46E5-9104-5153955A2D25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeekShopping.MessageBus", "GeekShopping.MessageBus\GeekShopping.MessageBus.csproj", "{421CF76E-7C35-46E5-9104-5153955A2D25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekShopping.OrderAPI", "GeekShopping.OrderAPI\GeekShopping.OrderAPI.csproj", "{6DF9EDCF-402F-4A44-82FC-944A6E3188FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{421CF76E-7C35-46E5-9104-5153955A2D25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{421CF76E-7C35-46E5-9104-5153955A2D25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{421CF76E-7C35-46E5-9104-5153955A2D25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DF9EDCF-402F-4A44-82FC-944A6E3188FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DF9EDCF-402F-4A44-82FC-944A6E3188FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DF9EDCF-402F-4A44-82FC-944A6E3188FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DF9EDCF-402F-4A44-82FC-944A6E3188FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +68,7 @@ Global
 		{B7D9EE08-9DF1-443E-90DE-EA7AC2AF73C0} = {14FA1FC0-FAB8-4D6E-9F3A-425A45C6B961}
 		{5F6C5B06-9FDE-4C9C-AC6E-8DFD79A04B21} = {14FA1FC0-FAB8-4D6E-9F3A-425A45C6B961}
 		{421CF76E-7C35-46E5-9104-5153955A2D25} = {09434C04-570E-41E7-A1AA-B441F649FBBA}
+		{6DF9EDCF-402F-4A44-82FC-944A6E3188FD} = {14FA1FC0-FAB8-4D6E-9F3A-425A45C6B961}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9BBA0D9E-5BA7-4410-8518-985F2471A395}
