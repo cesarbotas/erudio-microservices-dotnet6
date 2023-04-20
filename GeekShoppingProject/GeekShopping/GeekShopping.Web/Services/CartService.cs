@@ -2,6 +2,7 @@
 using GeekShopping.Web.Models.Cart;
 using GeekShopping.Web.Services.IServices;
 using GeekShopping.Web.Utils;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Reflection;
 
@@ -92,7 +93,7 @@ namespace GeekShopping.Web.Services
             throw new NotImplementedException();
         }
 
-        public async Task<CartHeaderViewModel> Checkout(CartHeaderViewModel model, string token)
+        public async Task<object> Checkout(CartHeaderViewModel model, string token)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
@@ -100,6 +101,8 @@ namespace GeekShopping.Web.Services
 
             if (response.IsSuccessStatusCode)
                 return await response.ReadContentAs<CartHeaderViewModel>();
+            else if (response.StatusCode == HttpStatusCode.PreconditionFailed)
+                return "Coupon Price has changed, please confirm!";
             else
                 throw new Exception("Deu Ruim no Checkout");
         }
