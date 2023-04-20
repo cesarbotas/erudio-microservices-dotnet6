@@ -70,6 +70,7 @@ namespace GeekShopping.OrderAPI.MessageConsumer
                 CouponCode = headerVO.CouponCode,
                 CVV = headerVO.CVV,
                 DiscountAmount = headerVO.DiscountAmount,
+                Phone= headerVO.Phone,
                 Email = headerVO.Email,
                 ExpiryMonthYear = headerVO.ExpiryMonthYear,
                 OrderTime = DateTime.Now,
