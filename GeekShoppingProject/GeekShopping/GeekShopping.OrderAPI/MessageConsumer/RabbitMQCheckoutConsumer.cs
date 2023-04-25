@@ -1,5 +1,6 @@
 ﻿using GeekShopping.OrderAPI.Messages;
 using GeekShopping.OrderAPI.Model.Entity;
+using GeekShopping.OrderAPI.RabbitMQSender;
 using GeekShopping.OrderAPI.Repository;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -13,15 +14,19 @@ namespace GeekShopping.OrderAPI.MessageConsumer
         private readonly OrderRepository _orderRepository;
         private IConnection _connection;
         private IModel _channel;
+        private IRabbitMQMessageSender _rabbitMQMessageSender;
 
         private readonly string _hostName = "localhost";
         private readonly string _userName = "guest";
         private readonly string _password = "guest";
         private readonly string _queueName = "checkoutqueue";
+        private readonly string _queuePaymentProcess = "orderpaymentprocessqueue";
 
-        public RabbitMQCheckoutConsumer(OrderRepository orderRepository)
+        public RabbitMQCheckoutConsumer(OrderRepository orderRepository,
+            IRabbitMQMessageSender rabbitMQMessageSender)
         {
             _orderRepository = orderRepository;
+            _rabbitMQMessageSender = rabbitMQMessageSender;
 
             var factory = new ConnectionFactory
             {
@@ -93,6 +98,26 @@ namespace GeekShopping.OrderAPI.MessageConsumer
             }
 
             await _orderRepository.AddOrder(orderHeader);
+
+            PaymentVO payment = new PaymentVO()
+            {
+                Name = $"{orderHeader.FirstName} {orderHeader.LastName}",
+                CardNumber = orderHeader.CardNumber,
+                CVV = orderHeader.CVV,
+                ExpireMonthYear = orderHeader.ExpiryMonthYear,
+                OrderId = orderHeader.Id,
+                PurchaseAmout = orderHeader.PurchaseAmount,
+                Email = orderHeader.Email
+            };
+
+            try
+            {
+                _rabbitMQMessageSender.SendMessage(payment, _queuePaymentProcess);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }
