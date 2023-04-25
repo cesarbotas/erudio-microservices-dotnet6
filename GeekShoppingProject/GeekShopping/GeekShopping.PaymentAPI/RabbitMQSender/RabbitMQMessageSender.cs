@@ -10,26 +10,30 @@ namespace GeekShopping.PaymentAPI.RabbitMQSender
     {
         private readonly string _hostName;
         private readonly string _userName;
-        private readonly string _password;        
+        private readonly string _password;
+        private readonly string _queueName;
+        private readonly string _exchangeName;
         private IConnection _connection;
 
         public RabbitMQMessageSender()
         {
             _hostName = "localhost";
             _userName = "guest";
-            _password = "guest";            
+            _password = "guest";
+            _queueName = string.Empty;
+            _exchangeName = "FanoutPaymentPaymentExchange";
         }
 
-        public void SendMessage(BaseMessage message, string queueName)
+        public void SendMessage(BaseMessage message)
         {
             if (ConnectionExists())
             {
                 using var channel = _connection.CreateModel();
-                channel.QueueDeclare(queueName, false, false, false);
+                channel.ExchangeDeclare(_exchangeName, ExchangeType.Fanout, durable: false);
 
                 byte[] body = GetMessageAsByteArray(message);
 
-                channel.BasicPublish(exchange: "", routingKey: queueName, basicProperties: null, body: body);
+                channel.BasicPublish(exchange: _exchangeName, _queueName, basicProperties: null, body: body);
             }
         }
 
