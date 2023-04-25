@@ -16,7 +16,7 @@ namespace GeekShopping.OrderAPI.MessageConsumer
         private readonly string _hostName = "localhost";
         private readonly string _userName = "guest";
         private readonly string _password = "guest";
-        private readonly string _queuePaymentProcess = "orderpaymentprocessqueue";
+        private readonly string _queuePaymentResult = "orderpaymentresultqueue";
 
         public RabbitMQPaymentConsumer(OrderRepository orderRepository)
         {
@@ -32,7 +32,7 @@ namespace GeekShopping.OrderAPI.MessageConsumer
             _connection = factory.CreateConnection();
 
             _channel = _connection.CreateModel();
-            _channel.QueueDeclare(_queuePaymentProcess, false, false, false);
+            _channel.QueueDeclare(_queuePaymentResult, false, false, false);
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -52,7 +52,7 @@ namespace GeekShopping.OrderAPI.MessageConsumer
                 _channel.BasicAck(ev.DeliveryTag, false);
             };
 
-            _channel.BasicConsume(_queuePaymentProcess, false, consumer);
+            _channel.BasicConsume(_queuePaymentResult, false, consumer);
 
             return Task.CompletedTask;
         }
