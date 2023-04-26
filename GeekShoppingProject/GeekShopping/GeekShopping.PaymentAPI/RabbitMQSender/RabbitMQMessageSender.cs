@@ -10,26 +10,38 @@ namespace GeekShopping.PaymentAPI.RabbitMQSender
     {
         private readonly string _hostName;
         private readonly string _userName;
-        private readonly string _password;        
+        private readonly string _password;
+        private string _queueNamePaymentEmailUpdate = "PaymentEmailUpdateQueue";
+        private string _queueNamePaymentOrderUpdate = "PaymentOrderUpdateQueue";
+        private string _exchangeName = "DirectPaymentUpdateExchange";
+        private string _routingKeyPaymentEmailUpdate = "PaymentEmail";
+        private string _routingKeyPaymentOrderUpdate = "PaymentOrder";
         private IConnection _connection;
 
         public RabbitMQMessageSender()
         {
             _hostName = "localhost";
             _userName = "guest";
-            _password = "guest";            
+            _password = "guest";
         }
 
-        public void SendMessage(BaseMessage message, string queueName)
+        public void SendMessage(BaseMessage message)
         {
             if (ConnectionExists())
             {
                 using var channel = _connection.CreateModel();
-                channel.QueueDeclare(queueName, false, false, false);
+                channel.ExchangeDeclare(_exchangeName, ExchangeType.Direct, durable: false);
+
+                channel.QueueDeclare(_queueNamePaymentEmailUpdate, false, false, false, null);
+                channel.QueueDeclare(_queueNamePaymentOrderUpdate, false, false, false, null);
+
+                channel.QueueBind(_queueNamePaymentEmailUpdate, _exchangeName, _routingKeyPaymentEmailUpdate);
+                channel.QueueBind(_queueNamePaymentOrderUpdate, _exchangeName, _routingKeyPaymentOrderUpdate);
 
                 byte[] body = GetMessageAsByteArray(message);
 
-                channel.BasicPublish(exchange: "", routingKey: queueName, basicProperties: null, body: body);
+                channel.BasicPublish(exchange: _exchangeName, _routingKeyPaymentEmailUpdate, basicProperties: null, body: body);
+                channel.BasicPublish(exchange: _exchangeName, _routingKeyPaymentOrderUpdate, basicProperties: null, body: body);
             }
         }
 
@@ -60,7 +72,7 @@ namespace GeekShopping.PaymentAPI.RabbitMQSender
 
                 _connection = factory.CreateConnection();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
