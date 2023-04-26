@@ -18,8 +18,8 @@ namespace GeekShopping.OrderAPI.MessageConsumer
         private readonly string _password = "guest";
 
         private readonly string _exchangeName = "DirectPaymentUpdateExchange";
-        private string _queueName = string.Empty;
-        private string _routingKey = string.Empty;
+        private string _queueNamePaymentOrderUpdate = "PaymentOrderUpdateQueue";
+        private string _routingKeyPaymentOrderUpdate = "PaymentOrder";
 
         public RabbitMQPaymentConsumer(OrderRepository orderRepository)
         {
@@ -36,11 +36,11 @@ namespace GeekShopping.OrderAPI.MessageConsumer
 
             _channel = _connection.CreateModel();
 
-            _channel.ExchangeDeclare(_exchangeName, ExchangeType.Fanout, durable: false);
+            _channel.ExchangeDeclare(_exchangeName, ExchangeType.Direct, durable: false);
 
-            _queueName = _channel.QueueDeclare().QueueName;
+            _channel.QueueDeclare(_queueNamePaymentOrderUpdate, false, false, false, null);
 
-            _channel.QueueBind(_queueName, _exchangeName, _routingKey);
+            _channel.QueueBind(_queueNamePaymentOrderUpdate, _exchangeName, _routingKeyPaymentOrderUpdate);
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -60,7 +60,7 @@ namespace GeekShopping.OrderAPI.MessageConsumer
                 _channel.BasicAck(ev.DeliveryTag, false);
             };
 
-            _channel.BasicConsume(_queueName, false, consumer);
+            _channel.BasicConsume(_queueNamePaymentOrderUpdate, false, consumer);
 
             return Task.CompletedTask;
         }
@@ -71,9 +71,9 @@ namespace GeekShopping.OrderAPI.MessageConsumer
             {
                 await _orderRepository.UpdateOrderPaymentStatus(paymentResultVO.OrderId, paymentResultVO.Status);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
     }
