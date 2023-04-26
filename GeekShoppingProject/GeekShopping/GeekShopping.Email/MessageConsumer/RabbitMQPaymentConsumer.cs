@@ -18,8 +18,8 @@ namespace GeekShopping.Email.MessageConsumer
         private readonly string _password = "guest";
 
         private readonly string _exchangeName = "DirectPaymentUpdateExchange";
-        private string _queueName = string.Empty;
-        private string _routingKey = string.Empty;
+        private string _queueNamePaymentEmailUpdate = "PaymentEmailUpdateQueue";
+        private string _routingKeyPaymentEmailUpdate = "PaymentEmail";
 
         public RabbitMQPaymentConsumer(EmailRepository emailRepository)
         {
@@ -36,11 +36,11 @@ namespace GeekShopping.Email.MessageConsumer
 
             _channel = _connection.CreateModel();
 
-            _channel.ExchangeDeclare(_exchangeName, ExchangeType.Fanout, durable: false);
+            _channel.ExchangeDeclare(_exchangeName, ExchangeType.Direct, durable: false);
 
-            _queueName = _channel.QueueDeclare().QueueName;
+            _channel.QueueDeclare(_queueNamePaymentEmailUpdate, false, false, false, null);
 
-            _channel.QueueBind(_queueName, _exchangeName, _routingKey);
+            _channel.QueueBind(_queueNamePaymentEmailUpdate, _exchangeName, _routingKeyPaymentEmailUpdate);
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -60,7 +60,7 @@ namespace GeekShopping.Email.MessageConsumer
                 _channel.BasicAck(ev.DeliveryTag, false);
             };
 
-            _channel.BasicConsume(_queueName, false, consumer);
+            _channel.BasicConsume(_queueNamePaymentEmailUpdate, false, consumer);
 
             return Task.CompletedTask;
         }
