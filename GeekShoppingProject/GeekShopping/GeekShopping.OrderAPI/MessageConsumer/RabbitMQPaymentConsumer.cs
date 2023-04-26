@@ -17,7 +17,7 @@ namespace GeekShopping.OrderAPI.MessageConsumer
         private readonly string _userName = "guest";
         private readonly string _password = "guest";
 
-        private readonly string _exchangeName = "FanoutPaymentPaymentExchange";
+        private readonly string _exchangeName = "DirectPaymentUpdateExchange";
         private string _queueName = string.Empty;
         private string _routingKey = string.Empty;
 
